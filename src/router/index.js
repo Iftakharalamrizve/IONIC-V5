@@ -6,6 +6,10 @@ import Map from '../views/Map.vue';
 
 const routes = [
   {
+    path: "/",
+    redirect: "/home",
+  },
+  {
     path: "/home",
     component: BaseLayoutWithTab,
     children: [
@@ -39,9 +43,9 @@ const routes = [
     ],
   },
   {
-    path: '/user/create',
-    component: () => import('../views/AddUserPage.vue')
-  }
+    path: "/user/create",
+    component: () => import("../views/AddUserPage.vue"),
+  },
 ];
 
 const router = createRouter({

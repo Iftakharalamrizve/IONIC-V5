@@ -15,9 +15,11 @@
 <script >
 import { defineComponent } from "vue";
 import { IonContent, IonList, IonItem, IonLabel } from "@ionic/vue";
+import { computed, onBeforeUpdate, onMounted } from "vue";
+import { useStore } from "vuex";
 import { HOME_PAGE } from "../constant";
 import { add } from "ionicons/icons";
-import { mapState } from "vuex";
+
 export default defineComponent({
   name: "Home",
   components: {
@@ -26,19 +28,23 @@ export default defineComponent({
     IonItem,
     IonLabel
   },
-  computed: {
-    ...mapState({
-      itemList: state => state.userStore.userList
-    })
-  },
-  data() {
-    return { add };
-  },
-  beforeUpdate() {
-    this.$store.commit("SET_DEFAULT_PAGE_TITLE", HOME_PAGE);
-  },
-  mounted() {
-    this.$store.commit("SET_DEFAULT_PAGE_TITLE", HOME_PAGE);
+  setup() {
+    //initialized global store
+    const store = useStore();
+    //item List computed property from global state
+    const itemList = computed(() => store.state.userStore.userList);
+    //when page is mount then onMounted is called
+    onMounted(() => {
+      store.commit("SET_DEFAULT_PAGE_TITLE", HOME_PAGE);
+    });
+    //after create page before  then onBeforeUpdate is called
+    onBeforeUpdate(() => {
+      store.commit("SET_DEFAULT_PAGE_TITLE", HOME_PAGE);
+    });
+    return {
+      itemList,
+      add
+    };
   }
 });
 </script>
